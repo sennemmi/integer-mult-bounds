@@ -38,9 +38,12 @@ checks. Replay uses temporary directories and leaves frozen evidence intact.
 The rational tensor control requires SymPy; the other new drivers use the
 standard library. CI installs the pinned dependency for replay.
 
-`validation-prior/` preserves the original executed audit sources and measured
-native receipts. The portability checker permits only two documented path
-substitutions; it does not silently treat different mathematical code as an
+The validation-prior directory preserves the original executed audit sources
+and structured native receipts. Four historical replay log files are excluded
+by the root .gitignore rule for log files; their SHA-256 values remain recorded in
+SOURCE.json under ignored_log_sha256, but the raw log contents are not shipped
+or required by the replay. The portability checker permits only two documented
+path substitutions; it does not silently treat different mathematical code as
 already-passed check. Machine elapsed times are excluded from regenerated
 mathematical-output comparisons. The `new_multiplication_bound: false` fields
 in these historical receipts accurately record their scope when run; the

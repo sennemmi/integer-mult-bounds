@@ -34,6 +34,14 @@ def verify_pins():
     pins=read(HERE/'SOURCE.json')
     for rel,sha in pins['files'].items():
         assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==sha,('source drift',rel)
+    ignored_logs=pins.get('ignored_log_sha256',{})
+    assert set(ignored_logs)=={
+        'research/deferred-signed/validation-prior/frames-replay.log',
+        'research/deferred-signed/validation-prior/lifted-replay.log',
+        'research/deferred-signed/validation-prior/stair-replay.log',
+        'research/deferred-signed/validation-prior/stair_control-replay.log',
+    }
+    assert all(rel.endswith('.log') and len(sha)==64 and all(c in '0123456789abcdef' for c in sha) for rel,sha in ignored_logs.items())
     foreign=read(HERE/'swapnil-round7/IMPORT.json')
     for rel,sha in foreign['files'].items():
         assert hashlib.sha256((HERE/'swapnil-round7'/rel).read_bytes()).hexdigest()==sha,('foreign drift',rel)
@@ -46,12 +54,12 @@ def verify_pins():
         if name=='round7_balanced_assembly_candidate.py':
             old=old.replace("HERE/'integration/scripts'", "HERE.parents[1]/'scripts'").replace("HERE/'integration/scripts/structured_bulk_assembly.py'", "HERE.parents[1]/'scripts/structured_bulk_assembly.py'")
         assert old==(HERE/name).read_text(),('unreviewed port edit',name)
-    return len(pins['files'])
+    return len(pins['files']),len(ignored_logs)
 
 def main():
     assert __debug__,'verification requires assertions'
     ap=argparse.ArgumentParser();ap.add_argument('--replay',action='store_true');ap.add_argument('--replay-own',action='store_true');args=ap.parse_args()
-    count=verify_pins();bit=read(HERE/'round7-literal-ledger/result.json');cx=read(HERE/'round6-complex-literal-ledger/result.json')
+    count,ignored_logs=verify_pins();bit=read(HERE/'round7-literal-ledger/result.json');cx=read(HERE/'round6-complex-literal-ledger/result.json')
     assert all(bit[k] for k in ('complete_forward_F2','complete_reflected_F2','reflected_frame_continuity','histogram_matches_external'))
     assert all(cx[k] for k in ('actual_forward_equal_frames','reflected_continuity','actual_geometry_passed','histogram_matches_pinned'))
     H={int(t):n for t,n in bit['histogram'].items()};C={int(t):n for t,n in cx['full_histogram'].items()}
@@ -94,6 +102,6 @@ def main():
                 assert r.returncode==0,(argv,r.stdout[-4000:])
                 if '--control' in argv:assert 'certified=False' in r.stdout
                 print('PASS native',argv,flush=True)
-    print('PASS',count,'pins; both independent moments; 47 constraints; 7 margins; kappa=63965813/10^12 > 2^-14')
+    print('PASS',count,'tracked pins;',ignored_logs,'ignored legacy-log hashes recorded; both independent moments; 47 constraints; 7 margins; kappa=63965813/10^12 > 2^-14')
     print('Conditional on retained analytic/fixed-tape interfaces; not formal verification of the full theorem.')
 if __name__=='__main__':main()
