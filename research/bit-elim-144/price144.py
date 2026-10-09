@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 import paired_cube_network as pcn  # noqa: E402
 
 GRID = 10**10
+HISTORICAL_ATOM = Q(1, 1000)  # #144's saved control price; current pcn.ATOM belongs to a later certificate.
 
 
 def bit_profile(row):
@@ -72,8 +73,8 @@ def price(row):
     p = bit_profile(row)
     k = largest(lambda k: bit_ok(p, Q(k, GRID)), int(Q(4, 10**4) * GRID), int(Q(6, 10**4) * GRID))
     coarse = Q(k, GRID)
-    ab = (1 - pcn.ATOM) * coarse + pcn.ATOM * pcn.OLD
-    assert pcn.ATOM > ab and pcn.ATOM < 1 - ab
+    ab = (1 - HISTORICAL_ATOM) * coarse + HISTORICAL_ATOM * pcn.OLD
+    assert HISTORICAL_ATOM > ab and HISTORICAL_ATOM < 1 - ab
     assembly_bit = min(ab, (1 - pcn.PHASE_STOP) * pcn.AC - Q(1, 10**10))
     crow = json.loads((ROOT / 'certificates' / 'paired-cube-complex-input.json').read_text())
     phase = pcn.complex_certificate(crow, pcn.checked_complex_record())

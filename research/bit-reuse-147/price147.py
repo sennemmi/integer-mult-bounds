@@ -67,8 +67,8 @@ def largest(ok, lo, hi):
 
 
 def price(row, atom=None, grid=GRID):
-    """atom None: the merged #144 atom exponent 1/1000.  grid 10^10 is #144's own grid."""
-    atom = pcn.ATOM if atom is None else atom
+    """atom None: #144's historical exponent 1/1000; grid 10^10 is #144's own grid."""
+    atom = Q(1, 1000) if atom is None else atom
     p = bit_profile(row)
     assert Q(2 * p['m']**3, 2**80) < pcn.BAD
     k = largest(lambda k: bit_gap(p, Q(k, grid)) is not None, 4 * grid // 10**4, 6 * grid // 10**4)

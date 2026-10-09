@@ -898,7 +898,7 @@
       "maximum_determinant_bits": 118,
       "rule": "Every q>2^80 avoids every nonzero used-frame determinant, so the original prime range is unchanged.",
       "scope": "Exact integer cleared-Gram factors for all physical frames including every changed operation, gauge, source, root, partner-mix, delivery and ambient frame. Uniform split-rank and fallback arguments remain the retained local-ring interface.",
-      "script_sha256": "37808c871602ca1cb3073044bee9f365c7ee350ed05fbb954b1f19be9cb3fb5d",
+      "script_sha256": "36bf9e0fc54c6c1e739801fd9240b20beaf5235758aef271be50943414109a1c",
       "source_commit": "4a3c769e5c5430e7114c4d3e099ff34664677f17",
       "status": "PASS exact prime witnesses for every used physical frame",
       "stripped_primes": [
@@ -918,7 +918,7 @@
       "total_used_frames": 24553,
       "unique_used_bases": 24553,
       "witness_file": "bit/prime-witnesses.json.gz",
-      "witness_sha256": "0797ea198bac8bf302955a204f5fedfb85c0e4a9d2fd00f9e16d0c93daacbf83"
+      "witness_sha256": "bc2e6b9f6c511f688d71b254b603a2583452986c3cb39f095bcde618f2028bb4"
     },
     "profile": {
       "R": 17554,
