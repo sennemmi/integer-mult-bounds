@@ -1,0 +1,63 @@
+name: Build PR200 frame-descent research certificates
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Install finite construction dependencies
+        run: python -m pip install -r research/source-assisted/requirements-round13.txt
+      - name: Rebuild the inherited PR189 prime and bit certificates
+        run: |
+          python -B research/paired-cube-twin-local-168/bit/prime_witnesses.py --write
+          python -B research/paired-cube-twin-local-168/verify.py --write
+      - name: Refresh the PR189 source-hash overlay after regeneration
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          path = Path('research/paired-cube-twin-local-168/SOURCE.json')
+          manifest = json.loads(path.read_text())
+          for name in manifest['files']:
+              manifest['files'][name] = hashlib.sha256(Path(name).read_bytes()).hexdigest()
+          path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+          PY
+      - name: Reproduce the deterministic 112-frame search receipt
+        run: |
+          python -B research/paired-cube-diagonal-bit-168-followup/search.py
+          git diff --exit-code -- research/paired-cube-diagonal-bit-168-followup/frame-descent.json
+      - name: Build the exact PR200 frame-descent certificate and prime witnesses
+        run: python -B research/paired-cube-diagonal-bit-168-followup/verify.py --write
+      - name: Pin the descent inputs and regenerate the composed κ certificate
+        run: |
+          python -B research/paired-cube-diagonal-bit-168-followup/pin_sources.py
+          python -B research/source-assisted-v4/pin_sources.py
+          python -B research/source-assisted-v4/verify.py --write
+      - name: Upload deterministic research certificates for incorporation
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pr200-frame-descent-certificates
+          path: |
+            research/paired-cube-twin-local-168/bit/prime-witnesses.json.gz
+            research/paired-cube-twin-local-168/certificate.json
+            research/paired-cube-twin-local-168/SOURCE.json
+            research/paired-cube-diagonal-bit-168-followup/frame-prime-witnesses.json.gz
+            research/paired-cube-diagonal-bit-168-followup/certificate.json
+            research/paired-cube-diagonal-bit-168-followup/SOURCE.json
+            research/source-assisted-v4/certificate.json
+            research/source-assisted-v4/SOURCE.json
+          if-no-files-found: warn
+          retention-days: 5

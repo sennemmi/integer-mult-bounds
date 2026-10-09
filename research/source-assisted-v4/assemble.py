@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble the source-assisted v4 complex profile with PR189's descended bit supplier.
+"""Assemble the source-assisted v4 complex profile with PR200's bit supplier.
 
 This script reuses PR184's research/source-assisted/global/assemble_profiles.py
 (GPT-6 Astra for icekylinx, Apache-2.0) as a module: its normalize(), select()
@@ -8,9 +8,9 @@ balanced assembly with PR184's finite bridge. Only the inputs change:
 
 - the complex profile is this package's contract-checked profile, with the
   complex half of PR184's construction receipts checked here;
-- the bit profile is the PR189 bit profile (chafreaky) after the exact 102-op
-  endpoint-frame descent, read from research/paired-cube-twin-local-168/
-  certificate.json, which that package's verify.py regenerates.
+- the bit profile is PR200's fixed-coordinate/face-diagonal supplier after the
+  separately verified 112-frame endpoint descent, read from
+  research/paired-cube-diagonal-bit-168-followup/certificate.json.
 
 PR184's select() recomputes the descended bit coarse saving on its 10^-10 grid with the
 bad-row allowance 10^-16 and fallback 32 m^2 per edge, the least payable atom
@@ -30,7 +30,7 @@ import sys
 PKG = Path(__file__).resolve().parent
 REPO = PKG.parents[1]
 SA = REPO / 'research/source-assisted'
-BIT = REPO / 'research/paired-cube-twin-local-168/certificate.json'
+BIT = REPO / 'research/paired-cube-diagonal-bit-168-followup/certificate.json'
 BOOTSTRAP_DEPTH = 2
 
 
@@ -62,13 +62,14 @@ def complex_receipts(cdata):
                 complex_endpoint_checks=checks)
 
 
-def bit_profile():
-    certificate = json.loads(BIT.read_text())
-    assert certificate['status'].startswith('PASS'), 'PR189 certificate status'
+def bit_profile(certificate_path=BIT):
+    certificate = json.loads(Path(certificate_path).read_text())
+    assert certificate['status'].startswith('PASS'), 'PR200 certificate status'
     row = certificate['bit']['profile']
     assert row['m'] == 72 and row['deficit_per_vertex'] == 1936
     assert row['terminal_sinks'] == 34 and row['reused_registers'] == 1760
-    return row, sha256(BIT.read_bytes()).hexdigest(), certificate['bit']['coarse']
+    ceiling = certificate['bit']['coarse']['accepted']['raw']['saving']
+    return row, sha256(Path(certificate_path).read_bytes()).hexdigest(), ceiling
 
 
 def bootstrap_bit_leaf(bit):
@@ -108,6 +109,7 @@ def bootstrap_bit_leaf(bit):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--complex', type=Path, required=True)
+    parser.add_argument('--bit-certificate', type=Path, default=BIT)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     assert not sys.flags.optimize, 'Assertions must remain enabled'
@@ -115,16 +117,17 @@ def main():
         sys.set_int_max_str_digits(0)
     pr184 = load_pr184()
     cdata = json.loads(args.complex.read_text())
-    row, bit_sha, pr189_coarse = bit_profile()
+    row, bit_sha, bit_certificate_coarse = bit_profile(args.bit_certificate)
     c = pr184.select(pr184.normalize(cdata))
     b = pr184.select(pr184.normalize(row), True)
-    # PR184's 10^-10 bit grid must not exceed PR189's own 10^-18 certificate.
-    assert b['saving'] <= pr184.Q(pr189_coarse['coarse_saving'])
+    # PR184's 10^-10 grid must not exceed PR200's exact paid 10^-18 witness.
+    assert b['saving'] <= pr184.Q(bit_certificate_coarse)
     b, bootstrap = bootstrap_bit_leaf(b)
     out = dict(status='Exact arithmetic; construction and finite bridge are explicit proof dependencies',
                complex=c, bit=b,
                source_sha256=dict(complex=sha256(args.complex.read_bytes()).hexdigest(), bit_certificate=bit_sha),
-               bit_source='research/paired-cube-twin-local-168/certificate.json bit.profile after 102-operation endpoint-frame descent (PR189 supplier), then PR185 depth-2 ordinary-leaf bootstrap',
+               bit_source='research/paired-cube-diagonal-bit-168/certificate.json bit.profile (PR200 supplier), then PR185 depth-2 ordinary-leaf bootstrap',
+               bit_certificate_coarse_saving=bit_certificate_coarse,
                arithmetic='PR184 assemble_profiles: 32-term rational logarithm enclosure; rational exponential majorant; upward 2^120 rounding',
                construction_receipts=complex_receipts(cdata))
     out.update(pr184.assemble(c, b, REPO, SA / 'global/FINITE_BRIDGE.txt'))

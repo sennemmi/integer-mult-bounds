@@ -126,7 +126,7 @@ def main():
         upper = Decimal(moment['moment_upper'].numerator)/Decimal(moment['moment_upper'].denominator)
         assert raw <= upper < 1
     crow = read(ROOT / 'certificates/paired-cube-complex-input.json')
-    phase = pcn.complex_certificate(crow)
+    phase = pcn.complex_certificate(crow, pcn.checked_complex_record())
     bridge = pcn.finite_bridge(phase, None, crow)
     bridge['bit_uniform'].update(coarse_saving=priced['coarse'], atom_beta=ATOM, ordinary_saving=priced['stopped'])
     result = pcn.assembly(priced['stopped'], pcn.AC, bridge, KAPPA, beta=pcn.PHASE_STOP)

@@ -20,17 +20,30 @@ FILES = ['scripts/paired_cube_producer.py', 'scripts/paired_cube_physical.py',
          'research/source-assisted/bit/source_aligned_lifts.json',
          'research/source-assisted/bit/source_aligned_profile.json',
          'notes/source-assisted-note.tex',
-         'research/paired-cube-twin-local-168/certificate.json']
+         'research/paired-cube-twin-local-168/certificate.json',
+         'research/paired-cube-twin-local-168/SOURCE.json',
+         'research/paired-cube-twin-local-168/verify.py']
 FILES += ['research/bit-leaf-bootstrap182/PROOF.md',
           'research/bit-leaf-bootstrap182/README.md',
           'research/bit-leaf-bootstrap182/NOTICE',
           'research/bit-leaf-bootstrap182/SOURCE.json',
           'research/bit-leaf-bootstrap182/certificate.json',
           'research/bit-leaf-bootstrap182/validation.json',
-          'research/bit-leaf-bootstrap182/verify.py']
+          'research/bit-leaf-bootstrap182/verify.py',
+          'research/paired-cube-diagonal-bit-168-followup/README.md',
+          'research/paired-cube-diagonal-bit-168-followup/PROOF.md',
+          'research/paired-cube-diagonal-bit-168-followup/NOTICE',
+          'research/paired-cube-diagonal-bit-168-followup/search.py',
+          'research/paired-cube-diagonal-bit-168-followup/verify.py',
+          'research/paired-cube-diagonal-bit-168-followup/pin_sources.py',
+          'research/paired-cube-diagonal-bit-168-followup/frame-descent.json',
+          'research/paired-cube-diagonal-bit-168-followup/SOURCE.json',
+          'research/paired-cube-diagonal-bit-168-followup/certificate.json',
+          'research/paired-cube-diagonal-bit-168-followup/frame-prime-witnesses.json.gz']
 DIRECTORIES = ['scripts/paired_cube', 'references/paired-cube/sources', 'references/paired-cube/selected-module',
-               'references/paired-cube/physical', 'references/three-stage-cover/pr117']
-OWN = ['README.md', 'PROOF.md', 'NOTICE', 'verify.py', 'pin_sources.py', 'source_aligned_local_v4.py', 'assemble.py',
+               'references/paired-cube/physical', 'references/three-stage-cover/pr117',
+               'research/paired-cube-diagonal-bit-168']
+OWN = ['README.md', 'PROOF.md', 'NOTICE', 'LEADERBOARD.md', 'verify.py', 'pin_sources.py', 'source_aligned_local_v4.py', 'assemble.py',
        'contract_v4.py', 'data/physical-pairs.json', 'data/kernel-pairs.json']
 
 
@@ -40,7 +53,8 @@ def main():
         names.update(p.relative_to(REPO).as_posix() for p in (REPO / directory).rglob('*')
                      if p.is_file() and '__pycache__' not in p.parts)
     names.update((PKG / name).relative_to(REPO).as_posix() for name in OWN)
-    files = {name: hashlib.sha256((REPO / name).read_bytes()).hexdigest() for name in sorted(names)}
+    files = {name: hashlib.sha256((REPO / name).read_bytes()).hexdigest()
+             for name in sorted(names) if (REPO / name).is_file()}
     (PKG / 'SOURCE.json').write_text(json.dumps(dict(
         files=files,
         scope='Sources and finite inputs read by verify.py; certificate.json is derived.'),

@@ -10,21 +10,29 @@ decision/certify_complex_flow_contract.py; the header of each file states the ch
 PR184's complex_frame_flow.py, exact_complex_flow_lift.py, global/assemble_profiles.py,
 and FINITE_BRIDGE.txt are used unchanged from their own directory.
 
-Bit supplier: chafreaky, PR189 (research/paired-cube-twin-local-168, face-diagonal bit local
-circuit on PR168 v4, prepared by Chafik Boukhalfa with Anthropic Claude and OpenAI Codex
-assistance), used unchanged through its certified profile.
-assemble.py imports PR184's global/assemble_profiles.py unchanged.
+Final bit supplier: Chafik Boukhalfa, PR200 (research/paired-cube-diagonal-bit-168), with
+substantial Anthropic Claude and OpenAI Codex assistance. Its construction files, certificate,
+and NOTICE are vendored from exact head a1175449f34d39ff933d9d8ab23ced1f32b290ec; its original
+source manifest is retained byte-for-byte alongside the stack-specific active hash overlay.
+No authorship of the PR200 bit construction is claimed here.
 
-The 2026-10-09 endpoint-frame descent and its exact selection/cost certificate:
-OpenAI GPT-6 (Codex), building on the PR189 bit word; PR189 authorship and
-license notices remain applicable. No PR189 source attribution is replaced.
+PR189 (chafreaky) remains a separately certified predecessor supplier. Its 102-frame endpoint
+descent and certificate are credited to OpenAI GPT-6 (Codex), building on the PR189 bit word;
+they are not applied to PR200 or used in the final κ. PR189's authorship and license notices
+remain applicable. No PR189 source attribution is replaced.
+
+The 112-operation endpoint-frame descent on PR200's distinct bit word, including its deterministic
+search and exact physical/moment certificate, is prepared by OpenAI GPT-6 (Codex), following the
+endpoint-descent method developed above. This addition does not claim the PR200 word, its physical
+compiler, or terminal construction as new. PR200's authorship and license notices remain applicable.
+assemble.py imports PR184's global/assemble_profiles.py unchanged.
 
 Finite ordinary-leaf bootstrap: the physical finite wrapper and restored-row
 argument are inherited from PR185 (Rohan Arun, with OpenAI Codex assistance;
-research/bit-leaf-bootstrap182). The exact PR189 recurrence/pricing pattern was
-first applied in PR199 by Maxime Fleury with Codebuff assistance. This package
-combines that prior construction with the endpoint-frame descent; it does not
-claim the recurrence or physical wrapper as new work.
+research/bit-leaf-bootstrap182). The exact recurrence/pricing pattern was first
+applied to PR189 in PR199 by Maxime Fleury with Codebuff assistance. This package
+reuses that construction and credits its authors; it does not claim the recurrence
+or physical wrapper as new work.
 
 Query modules, local configuration file and physical frame layer: eumemic, PR168 v4
 (commit 4a3c769e5c5430e7114c4d3e099ff34664677f17), with Claude assistance, built on the

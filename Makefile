@@ -18,6 +18,7 @@ verify:
 	$(MAKE) verify-partial-gauge
 	$(MAKE) verify-three-stage-cover
 	$(MAKE) verify-paired-cube
+	$(MAKE) verify-source-assisted-v4
 	$(MAKE) verify-recycled-bit
 	$(MAKE) verify-entrance-banks
 	$(MAKE) verify-certificates
@@ -523,6 +524,15 @@ paired-cube-certificate:
 paired-cube-verify: paired-cube-producer paired-cube-bit paired-cube-certificate
 
 verify-paired-cube: paired-cube-verify
+
+.PHONY: source-assisted-v4-verify verify-source-assisted-v4
+source-assisted-v4-verify:
+	python3 -m pip install -r research/source-assisted/requirements-round13.txt
+	python3 -B research/paired-cube-twin-local-168/verify.py
+	python3 -B research/paired-cube-diagonal-bit-168-followup/search.py
+	python3 -B research/source-assisted-v4/verify.py
+
+verify-source-assisted-v4: source-assisted-v4-verify
 
 .PHONY: recycled-bit-verify recycled-bit-full-verify verify-recycled-bit
 recycled-bit-verify:

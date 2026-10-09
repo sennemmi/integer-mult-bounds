@@ -1,0 +1,11 @@
+This Apache-2.0 follow-up is based on Chafik Boukhalfa's PR200 bit supplier,
+with its substantial Anthropic Claude and OpenAI Codex assistance, and retains
+the complete source and attribution manifest from that exact upstream head.
+The frame-descent search and witness are prepared by OpenAI GPT-6 (Codex),
+using the endpoint-frame descent approach first recorded in PR198. The exact
+pricing and finite ordinary-leaf wrapper remain attributed to PR184, PR185 and
+PR199 and are not claimed as new here. Earlier PR168 and compiler lineage
+remains as recorded in the PR200 package notice.
+
+No upstream contribution is claimed as original. The added search, overlay,
+and verifier are licensed under Apache-2.0.

@@ -1,0 +1,17 @@
+{
+  "files": {
+    "research/paired-cube-diagonal-bit-168-followup/NOTICE": "48608061af5f01b54eed98db90db297b8c47d9d4ad3708f0107bf0fcd24522d9",
+    "research/paired-cube-diagonal-bit-168-followup/PROOF.md": "1464b9ef0382c90641b09703e57ea2d3f2b85625b1c663a963bc6a6b7177005d",
+    "research/paired-cube-diagonal-bit-168-followup/README.md": "cdecada2c53eeb3d6287a2a22199bf19d2b5cb502313fb3450544bdba2c9a42d",
+    "research/paired-cube-diagonal-bit-168-followup/frame-descent.json": "4cd6f524515afadbe12002475ed7c4dacd953e99a6966ebbeb60467a7dbcb46a",
+    "research/paired-cube-diagonal-bit-168-followup/pin_sources.py": "eb49262d9f2529073a9095edfb4a472bd1c1e61550c25b2dfbff1d9adb29eaba",
+    "research/paired-cube-diagonal-bit-168-followup/search.py": "7999ef609429d1b5b174cce32cb440e50e2babe419e3bd04c02702000977bbc0",
+    "research/paired-cube-diagonal-bit-168-followup/verify.py": "eb2ffb0ad1a5544d968850df44d080921c7b68f92288c8f68060d9eb02a5ec31",
+    "research/paired-cube-diagonal-bit-168/SOURCE.json": "4e8756e3abcfae15aea1aa439f530855024f6b4fa75a7354f36dd024d8aac0dc",
+    "research/paired-cube-diagonal-bit-168/references/pr200-upstream-SOURCE.json": "015abe3342d08d08a9c4a764f103cafc1be1fe7f23d7a72471bd87412c57c2df",
+    "research/source-assisted-v4/assemble.py": "ef955bfd749e972933125ac76427f92e2dbf77a9cb87ab162c31cb25c71aa49e",
+    "research/source-assisted/global/FINITE_BRIDGE.txt": "66d8f4ea8752abd89952d6674a636575a0db16e18b1c16e293f48f64242f0c46",
+    "research/source-assisted/global/assemble_profiles.py": "c56d0638d4bc1ac3f70c78778ea824f3a2ba23c31f7eeff3c93cf17df3f2e0de"
+  },
+  "scope": "Frozen search, exact frame witness, derived certificate and pricing dependencies."
+}

@@ -1,22 +1,33 @@
-name: Verify source-assisted complex word on PR168 v4 modules
+name: Verify descended PR200 bit supplier and source-assisted v4 assembly
+
 on:
   push:
     paths:
-      - 'research/source-assisted-v4/**'
+      - 'research/paired-cube-diagonal-bit-168-followup/**'
+      - 'research/paired-cube-diagonal-bit-168/**'
       - 'research/paired-cube-twin-local-168/**'
+      - 'research/source-assisted-v4/**'
+      - 'research/source-assisted/**'
+      - 'Makefile'
       - '.github/workflows/source-assisted-v4.yml'
   pull_request:
     paths:
-      - 'research/source-assisted-v4/**'
+      - 'research/paired-cube-diagonal-bit-168-followup/**'
+      - 'research/paired-cube-diagonal-bit-168/**'
       - 'research/paired-cube-twin-local-168/**'
+      - 'research/source-assisted-v4/**'
+      - 'research/source-assisted/**'
+      - 'Makefile'
       - '.github/workflows/source-assisted-v4.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -24,64 +35,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.13'
-      - name: Install finite construction dependencies
-        run: python -m pip install -r research/source-assisted/requirements-round13.txt
-      - name: Regenerate the complex word, flow, exact lift, contract and assembly
-        run: python -B research/source-assisted-v4/verify.py --candidate-output "$RUNNER_TEMP/source-assisted-v4-candidate.json"
-      - name: Upload regenerated certificate after a mismatch
-        if: failure()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: source-assisted-v4-generated-candidate
-          path: ${{ runner.temp }}/source-assisted-v4-candidate.json
-          if-no-files-found: ignore
-          retention-days: 3
-      - name: Regenerate the PR189 bit certificate that the assembly reads
-        run: python -B research/paired-cube-twin-local-168/verify.py
-      - name: Capture fresh dependent certificates after a verifier failure
-        if: failure()
-        run: |
-          python -B research/paired-cube-twin-local-168/bit/prime_witnesses.py --write
-          python -B research/paired-cube-twin-local-168/verify.py --write
-          python -B research/source-assisted-v4/pin_sources.py
-          python -B research/source-assisted-v4/verify.py --write
-          python - <<'PY'
-          import hashlib, json
-          from pathlib import Path
-          manifest_path = Path('research/paired-cube-twin-local-168/SOURCE.json')
-          manifest = json.loads(manifest_path.read_text())
-          changed = []
-          for name, expected in manifest['files'].items():
-              actual = hashlib.sha256(Path(name).read_bytes()).hexdigest()
-              if actual != expected:
-                  manifest['files'][name] = actual
-                  changed.append(name)
-          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
-          print('Updated PR189 pins for changed workflow/certificate inputs:', changed)
-          PY
-          python - <<'PY'
-          import hashlib, json
-          from pathlib import Path
-          for package in ('research/paired-cube-twin-local-168', 'research/source-assisted-v4'):
-              manifest = json.loads((Path(package) / 'SOURCE.json').read_text())
-              mismatches = [name for name, expected in manifest['files'].items()
-                            if hashlib.sha256(Path(name).read_bytes()).hexdigest() != expected]
-              if mismatches:
-                  raise SystemExit(f'{package}: stale pins: {mismatches}')
-              print(f'{package}: {len(manifest["files"])} source pins verified')
-          PY
-      - name: Upload refreshed certificates for review
-        if: always() && failure()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: refreshed-pr189-and-source-assisted-certificates
-          path: |
-            research/paired-cube-twin-local-168/bit/prime-witnesses.json.gz
-            research/paired-cube-twin-local-168/certificate.json
-            research/paired-cube-twin-local-168/SOURCE.json
-            research/source-assisted-v4/certificate.json
-            research/source-assisted-v4/SOURCE.json
-          if-no-files-found: error
-          retention-days: 3
-      - name: Require an unchanged tree
+      - name: Replay PR189, PR200 and descended supplier; rebuild exact assembly
+        run: make verify-source-assisted-v4
+      - name: Require unchanged source certificates
         run: git diff --exit-code

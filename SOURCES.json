@@ -533,5 +533,28 @@
       "175": "f1081fabbfadaaaaf7292a40d428dbbb865ce920"
     },
     "notices": "research/coordinated-frames-and-entrance-banks/UPSTREAM-NOTICE.md"
+  },
+  "source_assisted_v4_pr200_composition": {
+    "contributor": "OpenAI GPT-6 (Codex)",
+    "assistance": "Research integration and exact composition by Codex",
+    "source_assisted_complex_pr": 194,
+    "bit_supplier_pr": 200,
+    "bit_supplier_commit": "a1175449f34d39ff933d9d8ab23ced1f32b290ec",
+    "finite_leaf_wrapper_pr": 185,
+    "recurrence_pr": 199,
+    "kappa": "1693453/2500000000",
+    "source_manifest": "research/source-assisted-v4/SOURCE.json",
+    "proof": "research/source-assisted-v4/PROOF.md",
+    "certificate": "research/source-assisted-v4/certificate.json",
+    "notice": "research/source-assisted-v4/NOTICE",
+    "scope": "Conditional on PR184's retained analytic, recursion, precision, weighted-frame, fixed-tape routing, restored-row and all-size interfaces; PR200's finite physical bit witness with the independently verified 112-frame descent; and PR185's finite ordinary-leaf wrapper. The globally renumbered complex transcript and full Clifford/router replay remain outside this package.",
+    "status": "Draft candidate; exact strict improvement over open PR199 and PR204 claims; not selected_result pending full CI and post-CI review",
+    "leaderboard_snapshot": "research/source-assisted-v4/LEADERBOARD.md",
+    "frame_descent": "research/paired-cube-diagonal-bit-168-followup/frame-descent.json",
+    "frame_descent_source": "research/paired-cube-diagonal-bit-168-followup/verify.py",
+    "frame_descent_operations": 112,
+    "frame_descent_parent": "a1175449f34d39ff933d9d8ab23ced1f32b290ec",
+    "exact_gain_over_pr199": "83/1250000000",
+    "exact_gain_over_pr204": "83/1250000000"
   }
 }

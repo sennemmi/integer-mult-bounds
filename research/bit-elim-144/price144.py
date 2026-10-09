@@ -76,7 +76,7 @@ def price(row):
     assert pcn.ATOM > ab and pcn.ATOM < 1 - ab
     assembly_bit = min(ab, (1 - pcn.PHASE_STOP) * pcn.AC - Q(1, 10**10))
     crow = json.loads((ROOT / 'certificates' / 'paired-cube-complex-input.json').read_text())
-    phase = pcn.complex_certificate(crow)
+    phase = pcn.complex_certificate(crow, pcn.checked_complex_record())
     bridge = pcn.finite_bridge(phase, None, crow)
     assert Q(json.loads((ROOT / 'certificates' / 'copied-centers-network.json').read_text())['bit']['saving']) == pcn.OLD
     def accepts(kk):
