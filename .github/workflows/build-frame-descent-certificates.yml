@@ -1,6 +1,9 @@
 name: Build PR200 frame-descent research certificates
 
 on:
+  push:
+    branches:
+      - codex/frame-descent-bootstrap-20261009
   workflow_dispatch:
 
 permissions:

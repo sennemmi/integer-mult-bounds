@@ -1,24 +1,6 @@
 name: Verify descended PR200 bit supplier and source-assisted v4 assembly
 
 on:
-  push:
-    paths:
-      - 'research/paired-cube-diagonal-bit-168-followup/**'
-      - 'research/paired-cube-diagonal-bit-168/**'
-      - 'research/paired-cube-twin-local-168/**'
-      - 'research/source-assisted-v4/**'
-      - 'research/source-assisted/**'
-      - 'Makefile'
-      - '.github/workflows/source-assisted-v4.yml'
-  pull_request:
-    paths:
-      - 'research/paired-cube-diagonal-bit-168-followup/**'
-      - 'research/paired-cube-diagonal-bit-168/**'
-      - 'research/paired-cube-twin-local-168/**'
-      - 'research/source-assisted-v4/**'
-      - 'research/source-assisted/**'
-      - 'Makefile'
-      - '.github/workflows/source-assisted-v4.yml'
   workflow_dispatch:
 
 permissions:

@@ -1,8 +1,6 @@
 name: Verify research artifacts
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
 
 permissions:
