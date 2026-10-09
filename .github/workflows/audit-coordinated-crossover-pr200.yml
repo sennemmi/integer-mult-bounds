@@ -1,0 +1,26 @@
+name: Independent cloud replay of PR207 certificate
+
+on:
+  push:
+    branches: [codex/audit-pr207-20261010]
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Install pinned replay dependencies
+        run: python -m pip install -r research/coordinated-crossover-pr200/requirements.txt
+      - name: Replay the exact finite certificate and all controls
+        run: python -B research/coordinated-crossover-pr200/verify.py
+      - name: Require no tracked-file changes
+        run: git diff --exit-code
